@@ -22,82 +22,67 @@
 
       <div class="row align-items-center g-lg-5 py-5">
         <div class="col-xxl-8 offset-xxl-9 col-md-10 mx-auto col-lg-5">
-          <form class="p-4 p-md-5 border rounded-3 bg-light" style="margin-bottom: 30px;">
+          <form method="post" action="/api/lookup" class="p-4 p-md-5 border rounded-3 bg-light" style="margin-bottom: 30px;">
             <div class="form-floating mb-3" style="text-align: center;">
-              <input class="form-input" type="text" id="textInput" placeholder="Please type domain name in here">
+              <input name="domain_or_ip" class="form-input" type="text" id="textInput" placeholder="Please type domain name in here">
             </div>
-            <button class="btn btn-primary w-100" type="button">Search</button>
+            <button class="btn btn-primary w-100" type="submit">Search</button>
           </form>
         </div>
+        {% if domain_info|length != 0 %}
         <div class="col-xxl-8 offset-xxl-2 col-lg-7 text-center text-lg-start">
           <div class="table-responsive">
             <table class="table table-bordered" border="1" id="myTable">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Ext.</th>
+                  <th>Domain Name(s)</th>
+                  <th>Registrar</th>
+                  <th>Whois Server</th>
+                  <th data-format="YYYY/MM/DD">Updated Date</th>
+                  <th data-format="YYYY/MM/DD">Creation Date</th>
+                  <th data-format="YYYY/MM/DD">Expiration Date</th>
+                  <th>Name Server(s)</th>
+                  <th>Email(s)</th>
+                  <th>Organization</th>
+                  <th>Address</th>
                   <th>City</th>
-                  <th data-format="YYYY/MM/DD">Start Date</th>
-                  <th>Completion</th>
+                  <th>State</th>
+                  <th>Country</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Unity Pugh</td>
-                  <td>9958</td>
-                  <td>Curicó</td>
-                  <td>2005/02/11</td>
-                  <td>37%</td>
-                </tr>
-                <tr>
-                  <td>asdsadwdasdaws</td>
-                  <td>8971</td>
-                  <td>Dhanbad</td>
-                  <td>1999/04/07</td>
-                  <td>97%</td>
-                </tr>
-                <tr>
-                  <td>Kylie Bishop</td>
-                  <td>3147</td>
-                  <td>Norman</td>
-                  <td>2005/09/08</td>
-                  <td>63%</td>
-                </tr>
-                <tr>
-                  <td>Willow Gilliam</td>
-                  <td>3497</td>
-                  <td>Amqui</td>
-                  <td>2009/29/11</td>
-                  <td>30%</td>
-                </tr>
-                <tr>
-                  <td>Blossom Dickerson</td>
-                  <td>5018</td>
-                  <td>Kempten</td>
-                  <td>2006/11/09</td>
-                  <td>17%</td>
-                </tr>
-                <tr>
-                  <td>Elliott Snyder</td>
-                  <td>3925</td>
-                  <td>Enines</td>
-                  <td>2006/03/08</td>
-                  <td>57%</td>
+                  <td>{{ domain_info.domain_name|join(', ') }}</td>
+                  <td>{{ domain_info.registrar }}</td>
+                  <td>{{ domain_info.whois_server }}</td>
+                  <td>{{ domain_info.updated_date|join(', ') }}</td>
+                  <td>{{ domain_info.creation_date|join(', ') }}</td>
+                  <td>{{ domain_info.expiration_date|join(', ') }}</td>
+                  <td>{{ domain_info.name_servers|join(', ') }}</td>
+                  <td>{{ domain_info.emails|join(', ') }}</td>
+                  <td>{{ domain_info.org }}</td>
+                  <td>{{ domain_info.address }}</td>
+                  <td>{{ domain_info.city }}</td>
+                  <td>{{ domain_info.state }}</td>
+                  <td>{{ domain_info.country }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+        {% endif %}
+        {% if domain_map|length != 0 %}
         <div class="col-xxl-8 offset-xxl-9 col-md-10 mx-auto col-lg-5 map-div">
           <div class="map-cover">
             <div class="d-flex flex-row justify-content-center align-items-center map-title">
               <h1>Location map</h1>
             </div>
-            <div class="d-flex d-lg-flex flex-row justify-content-center align-items-center align-items-lg-center map-content">
-
+            <div class="d-flex d-lg-flex flex-row justify-content-center align-items-center align-items-lg-center map-content" id="locationMap">
+                {{ domain_map|safe }}
             </div>
           </div>
         </div>
+        {% endif %}
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
