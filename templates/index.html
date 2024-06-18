@@ -12,66 +12,89 @@
     <div class="container col-xl-10 col-xxl-8 px-4 py-5">
       <div class="caption v-middle text-center">
         <h1 class="cd-headline clip">
-          <span class="blc">I'm | </span>
-          <span class="cd-words-wrapper">
-            <b class="is-visible">DNS Lookup.</b>
-            <b>Riottecboi.</b>
-          </span>
+          <span class="blc">Riottecboi | DNS Lookup</span>
         </h1>
       </div>
 
       <div class="row align-items-center g-lg-5 py-5">
         <div class="col-xxl-8 offset-xxl-9 col-md-10 mx-auto col-lg-5">
-          <form method="post" action="/api/lookup" class="p-4 p-md-5 border rounded-3 bg-light" style="margin-bottom: 30px;">
+          <form method="post" action="/lookup" class="p-4 p-md-5 border rounded-3 bg-light" style="margin-bottom: 30px;">
             <div class="form-floating mb-3" style="text-align: center;">
               <input name="domain_or_ip" class="form-input" type="text" id="textInput" placeholder="Please type domain name in here">
             </div>
             <button class="btn btn-primary w-100" type="submit">Search</button>
           </form>
         </div>
-        {% if domain_info|length != 0 %}
+        {% if domain_info is not none %}
         <div class="col-xxl-8 offset-xxl-2 col-lg-7 text-center text-lg-start">
-          <div class="table-responsive">
-            <table class="table table-bordered" border="1" id="myTable">
-              <thead>
-                <tr>
-                  <th>Domain Name(s)</th>
-                  <th>Registrar</th>
-                  <th>Whois Server</th>
-                  <th data-format="YYYY/MM/DD">Updated Date</th>
-                  <th data-format="YYYY/MM/DD">Creation Date</th>
-                  <th data-format="YYYY/MM/DD">Expiration Date</th>
-                  <th>Name Server(s)</th>
-                  <th>Email(s)</th>
-                  <th>Organization</th>
-                  <th>Address</th>
-                  <th>City</th>
-                  <th>State</th>
-                  <th>Country</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ domain_info.domain_name|join(', ') }}</td>
-                  <td>{{ domain_info.registrar }}</td>
-                  <td>{{ domain_info.whois_server }}</td>
-                  <td>{{ domain_info.updated_date|join(', ') }}</td>
-                  <td>{{ domain_info.creation_date|join(', ') }}</td>
-                  <td>{{ domain_info.expiration_date|join(', ') }}</td>
-                  <td>{{ domain_info.name_servers|join(', ') }}</td>
-                  <td>{{ domain_info.emails|join(', ') }}</td>
-                  <td>{{ domain_info.org }}</td>
-                  <td>{{ domain_info.address }}</td>
-                  <td>{{ domain_info.city }}</td>
-                  <td>{{ domain_info.state }}</td>
-                  <td>{{ domain_info.country }}</td>
-                </tr>
-              </tbody>
+          <div >
+            <table class="table table-bordered">
+              <tr>
+                <td>Domain Name(s)</td>
+                <td>{% if domain_info.domain_name is not string %}{{ domain_info.domain_name|join(', ') }} {% else %} {{ domain_info.domain_name }}{% endif %}</td>
+              </tr>
+              <tr>
+                <td>Registrar</td>
+                <td>{{ domain_info.registrar }}</td>
+              </tr>
+              <tr>
+                <td>Whois Server</td>
+                <td>{{ domain_info.whois_server }}</td>
+              </tr>
+              <tr>
+                <td>Updated Date</td>
+                <td>{% if domain_info.updated_date is not string %}{{ domain_info.updated_date|join(', ') }} {% else %} {{ domain_info.updated_date }}{% endif %}</td>
+              </tr>
+              <tr>
+                <td>Creation Date</td>
+                <td>{% if domain_info.creation_date is not string %}{{ domain_info.creation_date|join(', ') }} {% else %} {{ domain_info.creation_date }}{% endif %}</td>
+              </tr>
+              <tr>
+                <td >Expiration Date</td>
+                <td>{% if domain_info.expiration_date is not string %}{{ domain_info.expiration_date|join(', ') }} {% else %} {{ domain_info.expiration_date }}{% endif %}</td>
+              </tr>
+              <tr>
+                <td>Name Server(s)</td>
+                <td>{{ domain_info.name_servers|join(', ') }}</td>
+              </tr>
+              <tr>
+                <td>Email(s)</td>
+                <td>{% if domain_info.emails is not string %}{{ domain_info.emails|join(', ') }} {% else %} {{ domain_info.emails }}{% endif %}</td>
+              </tr>
+              <tr>
+                <td>Organization</td>
+                <td>{{ domain_info.org }}</td>
+              </tr>
+              <tr>
+                <td>Address</td>
+                <td>{{ domain_info.address }}</td>
+              </tr>
+              <tr>
+                <td>City</td>
+                <td>{{ domain_info.city }}</td>
+              </tr>
+              <tr>
+                <td>State</td>
+                <td>{{ domain_info.state }}</td>
+              </tr>
+              <tr>
+                <td>Country</td>
+                <td>{{ domain_info.country }}</td>
+              </tr>
             </table>
           </div>
         </div>
+        {% else %}
+        <div class="caption v-middle text-center">
+          <h1 class="cd-headline clip">
+            <span class="cd-words-wrapper">
+              <b class="is-visible">NOT FOUND</b>
+              <b>TRY ANOTHER ONE</b>
+            </span>
+          </h1>
+        </div>
         {% endif %}
-        {% if domain_map|length != 0 %}
+        {% if domain_map is not none %}
         <div class="col-xxl-8 offset-xxl-9 col-md-10 mx-auto col-lg-5 map-div">
           <div class="map-cover">
             <div class="d-flex flex-row justify-content-center align-items-center map-title">

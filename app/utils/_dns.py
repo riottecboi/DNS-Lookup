@@ -47,15 +47,18 @@ class DomainLocator:
                 print(f"Unable to find coordinates for location: {location}")
         else:
             print(f"No registrar information found for {self.domain}")
+            self.domain_map = ''
 
     async def map_whois_data(self, data):
-        whois_fields = list(WhoisInfo.model_fields.keys())
-        self.return_info = {}
-        for field in whois_fields:
-            if field in data:
-                self.return_info[field] = data[field]
-        return self.return_info
-
+        if self.domain_info.domain_name and "Name or service not known" not in self.domain_info.text:
+            whois_fields = list(WhoisInfo.model_fields.keys())
+            self.return_info = {}
+            for field in whois_fields:
+                if field in data:
+                    self.return_info[field] = data[field]
+            return self.return_info
+        else:
+            return {}
     async def process_domain(self):
         if self.domain:
             print(f"Processing domain: {self.domain}")
