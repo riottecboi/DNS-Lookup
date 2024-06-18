@@ -51,7 +51,7 @@ async def process_and_encrypt_data(domain_or_ip: str):
 async def dns_lookup(domain_or_ip: str = Form(...)):
     try:
         encrypted_domain_info, encrypted_domain_map = await process_and_encrypt_data(domain_or_ip)
-        return RedirectResponse(url=f"/result?domain_info={encrypted_domain_info}&domain_map={encrypted_domain_map}", status_code=302)
+        return RedirectResponse(url=f"/result?domain={domain_or_ip}&domain_info={encrypted_domain_info}&domain_map={encrypted_domain_map}", status_code=302)
 
     except ValidationError as e:
         raise HTTPException(status_code=400, detail=ErrorResponse(error="Not processing Domain/IP",
@@ -63,6 +63,7 @@ async def get_template(request: Request):
 
 @router.get("/result")
 async def get_template(request: Request):
+    search_domain = request.query_params.get('domain')
     domain_info = request.query_params.get('domain_info')
     domain_map = request.query_params.get('domain_map')
 
@@ -76,4 +77,4 @@ async def get_template(request: Request):
 
         domain_map = cipher_suite.decrypt(domain_map.encode()).decode() if domain_map else None
 
-    return templates.TemplateResponse("index.html", {"request": request, "domain_info": domain_info, "domain_map": domain_map})
+    return templates.TemplateResponse("index.html", {"request": request, "domain": search_domain, "domain_info": domain_info, "domain_map": domain_map})
