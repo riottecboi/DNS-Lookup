@@ -46,3 +46,5 @@ validators==0.28.3
 watchfiles==0.22.0
 websockets==12.0
 xyzservices==2024.6.0
+geopy
+cryptography

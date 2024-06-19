@@ -59,10 +59,11 @@ async def dns_lookup(domain_or_ip: str = Form(...)):
 
 @router.get("/home")
 async def get_template(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "domain_info": {}, "domain_map": {}})
+    return templates.TemplateResponse("index.html", {"request": request, "domain_info": None, "domain_map": None, "found": True})
 
 @router.get("/result")
 async def get_template(request: Request):
+    found = True
     search_domain = request.query_params.get('domain')
     domain_info = request.query_params.get('domain_info')
     domain_map = request.query_params.get('domain_map')
@@ -70,6 +71,7 @@ async def get_template(request: Request):
     if domain_info == 'None':
         domain_info = eval(domain_info)
         domain_map = eval(domain_map)
+        found = False
 
     else:
         decrypted_domain_info_json = cipher_suite.decrypt(domain_info.encode()).decode() if domain_info else None
@@ -77,4 +79,4 @@ async def get_template(request: Request):
 
         domain_map = cipher_suite.decrypt(domain_map.encode()).decode() if domain_map else None
 
-    return templates.TemplateResponse("index.html", {"request": request, "domain": search_domain, "domain_info": domain_info, "domain_map": domain_map})
+    return templates.TemplateResponse("index.html", {"request": request, "domain": search_domain, "domain_info": domain_info, "domain_map": domain_map, "found": found})

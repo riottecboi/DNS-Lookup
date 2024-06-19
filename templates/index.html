@@ -10,6 +10,7 @@
   </head>
   <body>
     <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+
       <div class="caption v-middle text-center">
         <h1 class="cd-headline clip">
           <span class="blc">Riottecboi | DNS Lookup</span>
@@ -91,7 +92,8 @@
             </table>
           </div>
         </div>
-        {% else %}
+        {% endif %}
+        {% if not found %}
         <div class="caption v-middle text-center">
           <h1 class="cd-headline clip">
             <span class="cd-words-wrapper">
